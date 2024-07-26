@@ -148,10 +148,13 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
+        'oauth': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
         'calendar_sync': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,
         },
     },
 
