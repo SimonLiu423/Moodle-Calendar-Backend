@@ -18,6 +18,20 @@ JWT_SECRET = os.environ.get("JWT_SECRET_KEY")
 API_CRED_PATH = os.path.join(settings.BASE_DIR, "secrets", "api_credentials.json")
 
 
+def status(request):
+    """Check if the user has authorized the app."""
+    if 'Moodle-ID' not in request.headers.keys():
+        return HttpResponse(status=400)
+
+    moodle_id = request.headers['Moodle-ID']
+    if not UserOAuth.objects.filter(user_id=moodle_id).exists():
+        return HttpResponse(status=401)
+
+    user = UserOAuth.objects.get(user_id=moodle_id)
+
+    return HttpResponse(user.email, status=200)
+
+
 def bind(request):
     """Binds user's google account to their Moodle ID."""
 
