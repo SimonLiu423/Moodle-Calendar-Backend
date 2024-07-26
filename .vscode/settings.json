@@ -1,0 +1,19 @@
+{
+    "pylint.args": [
+        "--load-plugins",
+        "pylint_django",
+        "--django-settings-module=mysite.settings",
+        "--ignored-classes=Resource",
+    ],
+    "cSpell.words": [
+        "boxaligncenter",
+        "generalbox",
+        "googleapiclient",
+        "KHTML",
+        "logintoken",
+        "NCKU",
+        "relativedelta",
+        "submissionsalloweddates",
+        "userid"
+    ]
+}
