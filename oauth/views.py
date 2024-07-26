@@ -1,4 +1,5 @@
 """Views for the oauth app."""
+import logging
 import os
 
 import jwt
@@ -7,10 +8,14 @@ from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from google_auth_oauthlib.flow import Flow
 
+from oauth.utils import get_user_info
+
 from .models import UserOAuth
 
+logger = logging.getLogger(__name__)
+
 JWT_SECRET = os.environ.get("JWT_SECRET_KEY")
-API_CRED_PATH = os.path.join(settings.BASE_DIR, "api_credentials.json")
+API_CRED_PATH = os.path.join(settings.BASE_DIR, "secrets", "api_credentials.json")
 
 
 def bind(request):
@@ -71,6 +76,10 @@ def callback(request):
     flow.fetch_token(code=code)
     credentials = flow.credentials
 
+    user_info = get_user_info(credentials)
+
+    logger.info('Authorized user %s', user_info)
+
     # store oauth credentials in file and database
     file_content = ContentFile(credentials.to_json())
     if UserOAuth.objects.filter(user_id=int(user_id)).exists():
@@ -78,6 +87,7 @@ def callback(request):
         obj.oauth_credentials.delete()
     else:
         obj = UserOAuth(user_id=int(user_id))
+    obj.email = user_info['email']
     obj.oauth_credentials.save(f'user_{user_id}.json', file_content)
     obj.save()
     return HttpResponse(credentials)
