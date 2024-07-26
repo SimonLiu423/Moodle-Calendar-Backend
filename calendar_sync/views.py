@@ -10,7 +10,9 @@ from . import sync
 
 
 def trigger_sync(user_id: int, session_id: str):
+    """Trigger sync for the given user."""
     config = sync.config.load_config()
+    config['login_with_token'] = True
     config['moodle_session_id'] = session_id
 
     user_token_path = UserOAuth.objects.get(user_id=user_id).oauth_credentials.path
