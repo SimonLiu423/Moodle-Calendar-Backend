@@ -104,4 +104,4 @@ def callback(request):
     obj.email = user_info['email']
     obj.oauth_credentials.save(f'user_{user_id}.json', file_content)
     obj.save()
-    return HttpResponse(credentials)
+    return HttpResponse('成功綁定帳號，請關閉此視窗')
