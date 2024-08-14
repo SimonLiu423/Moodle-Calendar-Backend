@@ -51,7 +51,7 @@ def bind(request):
             'https://www.googleapis.com/auth/calendar',
         ],
         state=enc_jwt,
-        redirect_uri=request.build_absolute_uri("/oauth/callback")
+        redirect_uri="https://simonliu423.dev/mc/api/oauth/callback"
     )
 
     # redirect user to google oauth flow
@@ -84,7 +84,7 @@ def callback(request):
             'https://www.googleapis.com/auth/calendar',
         ],
         state=request.GET.get('state'),
-        redirect_uri=request.build_absolute_uri("/oauth/callback")
+        redirect_uri="https://simonliu423.dev/mc/api/oauth/callback"
     )
     code = request.GET.get('code')
     flow.fetch_token(code=code)
