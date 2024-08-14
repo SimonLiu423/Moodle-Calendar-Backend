@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('calendar_sync/', include('calendar_sync.urls')),
-    path('oauth/', include('oauth.urls')),
-    path('admin/', admin.site.urls),
+    path('mc/api/calendar_sync/', include('calendar_sync.urls')),
+    path('mc/api/oauth/', include('oauth.urls')),
+    path('mc/api/admin/', admin.site.urls),
 ]
