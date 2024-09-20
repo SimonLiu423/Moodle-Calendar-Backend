@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rrskj72_e23+11-@vjyg$%0d91xj$%w09*wmg+mjo*p)6$-axl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True 
+DEBUG = False
 
 ALLOWED_HOSTS = ['simonliu423.dev', 'localhost']
 
@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['simonliu423.dev', 'localhost']
 
 INSTALLED_APPS = [
     'corsheaders',
+    'background_task',
     'oauth.apps.OauthConfig',
     'calendar_sync.apps.CalendarSyncConfig',
     'django.contrib.admin',

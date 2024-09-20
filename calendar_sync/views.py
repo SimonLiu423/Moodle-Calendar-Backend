@@ -1,6 +1,9 @@
 """Views for the calendar_sync app."""
 from __future__ import annotations
 
+from datetime import timedelta
+
+from background_task import background
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -37,3 +40,10 @@ def calendar_sync(request):
         return HttpResponse(status=200)
     else:
         return HttpResponse(status=405)
+
+
+@background(schedule=timedelta(minutes=5))
+def background_sync():
+    """Background task to sync all users' Moodle calendars with Google Calendar."""
+    config = sync.config.load_config('sync_config.yaml')
+    sync.main.sync(config)
