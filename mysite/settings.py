@@ -29,6 +29,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['simonliu423.dev', 'localhost']
 
+CSRF_TRUSTED_ORIGINS = ["https://*.simonliu423.dev", "https://simonliu423.dev/*"]
 
 # Application definition
 
