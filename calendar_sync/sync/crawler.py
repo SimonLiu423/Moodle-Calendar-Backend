@@ -1,6 +1,7 @@
 """Crawl data from NCKU Moodle site."""
 from __future__ import annotations
 
+from datetime import datetime
 import json
 import logging
 from typing import TYPE_CHECKING, Any
@@ -149,6 +150,25 @@ class MoodleCrawler:
     def get_next_k_month_assign_info(self, k: int) -> list[dict[str, Any]]:
         """Get the information of the next `k` months' assignments."""
         timestamps = get_next_k_month_timestamp(k=k)
+        urls = self.get_month_assign_urls(timestamps)
+        assign_info = []
+        for url in urls:
+            assign_info.append(self.get_assign_info(url))
+        return assign_info
+
+    def get_assign_info_range(self, start_date: datetime.date, end_date: datetime.date) -> list[dict[str, Any]]:
+        """Get the information of the assignments in the given timestamp range."""
+        # Get all intermediate months between start_date and end_date
+        timestamps = []
+        current_date = start_date.replace(day=1)  # Start from first of month
+        while current_date <= end_date:
+            timestamps.append(int(datetime.combine(current_date, datetime.min.time()).timestamp()))
+            # Move to first of next month
+            if current_date.month == 12:
+                current_date = current_date.replace(year=current_date.year + 1, month=1)
+            else:
+                current_date = current_date.replace(month=current_date.month + 1)
+
         urls = self.get_month_assign_urls(timestamps)
         assign_info = []
         for url in urls:

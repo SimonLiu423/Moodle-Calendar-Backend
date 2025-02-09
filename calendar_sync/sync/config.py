@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from datetime import datetime, timedelta
 import logging
 import os
 from typing import TYPE_CHECKING, Any
@@ -17,6 +18,8 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 DEFAULT_CONFIG = {
+    'start_date': datetime.now().date(),
+    'end_date': datetime.now().date() + timedelta(weeks=12),
     'google_api_path': 'api_credentials.json',
     'google_token_path': 'token.json',
     'moodle_session_id': None,

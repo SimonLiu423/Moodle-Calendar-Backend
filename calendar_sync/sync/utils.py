@@ -5,8 +5,6 @@ import datetime
 import re
 from typing import Any
 
-from dateutil.relativedelta import relativedelta
-
 from calendar_sync.sync.exceptions import SubmissionStatusError
 
 
@@ -41,12 +39,10 @@ def get_cal_id(calendars: list[dict[str, Any]], summary: str) -> str | None:
     return None
 
 
-def get_iso_format_date(
-        date: datetime, delta_year: int = 0, delta_month: int = 0, delta_day: int = 0) -> str:
+def get_iso_format_date(date: datetime.date) -> str:
     """Get the ISO format date string with the given date and delta."""
-    date = date.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    date += relativedelta(years=delta_year, months=delta_month, days=delta_day)
-    return date.isoformat() + '+08:00'
+    dt = datetime.datetime.combine(date, datetime.time.min)
+    return dt.isoformat() + '+08:00'
 
 
 def get_color_id(can_submit: bool, submission_status: str) -> int:

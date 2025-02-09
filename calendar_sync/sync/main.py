@@ -34,17 +34,18 @@ def sync(config: dict[str, Any]) -> None:
     else:
         logger.info('Moodle Deadline calendar exists, won\'t create a new one.')
 
-    # get next k months assignment info
-    k = config['num_of_months']
-    assign_info = moodle_crawler.get_next_k_month_assign_info(k)
-    logger.info('Found %d assignments for next %d months.', len(assign_info), k)
+    # get assignments in the given date range
+    start_date = datetime.datetime.strptime(config['start_date'], '%Y-%m-%d').date()
+    end_date = datetime.datetime.strptime(config['end_date'], '%Y-%m-%d').date()
+
+    assign_info = moodle_crawler.get_assign_info_range(start_date, end_date)
+    logger.info('Found %d assignments for the date range %s to %s.', len(assign_info), start_date, end_date)
 
     # Update the calendar
     cal_events = calendar_client.list_events(cal_id, time_min=get_iso_format_date(
-        datetime.datetime.now()),
+        start_date),
         time_max=get_iso_format_date(
-        datetime.datetime.now(),
-        delta_month=k))
+        end_date))
 
     for assign in assign_info:
         logger.debug('Processing assignment %s.', assign)
@@ -80,4 +81,4 @@ def sync(config: dict[str, Any]) -> None:
                 assign['description'],
                 color_id=color_id)
 
-    logger.info('All assignments for the next %d months have been synced.', k)
+    logger.info('All assignments for the date range %s to %s have been synced.', start_date, end_date)
